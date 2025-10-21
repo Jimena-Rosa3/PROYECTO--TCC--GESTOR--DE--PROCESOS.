@@ -1,0 +1,53 @@
+###  Ruta principal
+GET http://localhost:5000/
+
+### REGISTRO DE USUARIO
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{
+  "nombre": "Jimena Rosa",
+  "correo": "jimenarosa@gmail.com",
+  "contras": "1234567",
+  "rol": "administrador"
+}
+
+### REGISTRO DE USUARIO
+POST http://localhost:5000/api/register
+Content-Type: application/json
+
+{
+  "nombre": "Santiago Ramos",
+  "correo": "santiramos@gmail.com",
+  "password": "1213456",
+  "rol": "revisor"
+}
+
+### LOGIN DE USUARIO
+POST http://localhost:5000/api/login
+Content-Type: application/json
+
+{
+  "correo": "jimenarosa@gmail.com",
+  "contras": "1234567"
+}
+
+### LISTAR TODOS LOS USUARIOS (ruta protegida con token)
+GET http://localhost:5000/api/usuarios
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTQ1MzIzM2Y1MWI5OWVjODEzMjk4NiIsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NTk3OTYxNjksImV4cCI6MTc1OTgwMzM2OX0.NrUxLPU5VR5_E3bKV4H0RmGikphP61o95WaYy4QQqyY
+
+
+### ACTUALIZAR USUARIO (solo ADMIN)
+PUT http://localhost:5000/api/usuarios/68e2d57cdad18c103b1e24c0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTQ1MzIzM2Y1MWI5OWVjODEzMjk4NiIsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NTk4MDIyOTIsImV4cCI6MTc1OTgwOTQ5Mn0.7r9Z9WWg5iHPbUZuCrraU7B8xk89Xx4teA7Ge_9c0Gk
+Content-Type: application/json
+
+{
+  "nombre": "Angie",
+  "correo": "angie@example.com",
+  "rol": "revisor"
+}
+
+### ELIMINAR USUARIO (solo ADMIN)
+DELETE http://localhost:5000/api/usuarios/68e2d57cdad18c103b1e24c0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTQ1MzIzM2Y1MWI5OWVjODEzMjk4NiIsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJpYXQiOjE3NTk4MDIyOTIsImV4cCI6MTc1OTgwOTQ5Mn0.7r9Z9WWg5iHPbUZuCrraU7B8xk89Xx4teA7Ge_9c0Gk

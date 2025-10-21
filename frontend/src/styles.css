@@ -1,0 +1,65 @@
+body {
+  background: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+}
+
+.login-container {
+  width: 350px;
+  margin: 100px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: #007bff;
+  border: none;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.dashboard {
+  text-align: center;
+  margin-top: 80px;
+  color: #333;
+}
+
+.dashboard h1 {
+  color: #007bff;
+}
+
+a {
+  color: #007bff;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.dashboard {
+  text-align: center;
+  margin-top: 60px;
+  color: #333;
+}
+
+button:hover {
+  opacity: 0.9;
+}
