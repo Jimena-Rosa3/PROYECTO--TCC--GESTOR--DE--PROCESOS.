@@ -1,21 +1,13 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import "../styles/dashboard.css"; 
+import React from "react";
 
-const DashboardAdmin = () => {
-  const { user, logout } = useContext(AuthContext);
-
+const AdminDashboard = () => {
   return (
-    <div className="dashboard">
-      <h1>Panel del Administrador</h1>
-      <p>Bienvenido, <strong>{user?.nombre}</strong></p>
-      <p>Rol: <strong>{user?.rol}</strong></p>
-
-      <div className="acciones">
-        <button onClick={logout}>Cerrar sesión</button>
-      </div>
+    <div className="h-screen flex items-center justify-center bg-blue-50">
+      <h1 className="text-3xl font-bold text-blue-700">
+        Panel del Administrador 
+      </h1>
     </div>
   );
 };
 
-export default DashboardAdmin;
+export default AdminDashboard;

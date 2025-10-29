@@ -1,21 +1,13 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import "../styles/dashboard.css";
+import React from "react";
 
-const DashboardRevisor = () => {
-  const { user, logout } = useContext(AuthContext);
-
+const RevisorDashboard = () => {
   return (
-    <div className="dashboard">
-      <h1>Panel del Revisor</h1>
-      <p>Bienvenido, <strong>{user?.nombre}</strong></p>
-      <p>Rol: <strong>{user?.rol}</strong></p>
-
-      <div className="acciones">
-        <button onClick={logout}>Cerrar sesión</button>
-      </div>
+    <div className="h-screen flex items-center justify-center bg-yellow-50">
+      <h1 className="text-3xl font-bold text-yellow-700">
+        Panel del Revisor 
+      </h1>
     </div>
   );
 };
 
-export default DashboardRevisor;
+export default RevisorDashboard;

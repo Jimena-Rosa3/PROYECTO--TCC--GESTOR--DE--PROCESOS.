@@ -1,75 +1,38 @@
-import React, { useContext } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, AuthContext } from "./context/AuthContext";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AuthPage from "./components/AuthPage";
+import AdminDashboard from "./components/DashboardAdmin";
+import SupervisorDashboard from "./components/DashboardSupervisor";
+import RevisorDashboard from "./components/DashboardRevisor";
+import DashboardRevisor from "./pages/Revisor/DashboardRevisor";
+import ProcesosSupervisor from "./components/Supervisor/ProcesosSupervisor";
+import DetalleProceso from "./components/Supervisor/DetalleProceso";
+import ReporteIncidencia from "./components/Supervisor/ReporteIncidencia"; 
+import ReportesSupervisor from "./pages/Supervisor/ReportesSupervisor";
 
-import Login from "./components/Login";
-import Register from "./components/Register";
-import DashboardAdmin from "./components/DashboardAdmin";
-import DashboardSupervisor from "./components/DashboardSupervisor";
-import DashboardRevisor from "./components/DashboardRevisor";
-import Header from "./components/Header";
-
-// 🔒 Componente de protección de rutas
-const PrivateRoute = ({ children, role }) => {
-  const { user } = useContext(AuthContext);
-
-  if (!user) {
-    return <Navigate to="/" />;
-  }
-
-  if (role && user.rol !== role) {
-    return <Navigate to={`/${user.rol}`} />;
-  }
-
-  return children;
-};
-
-const App = () => {
+function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Header />
-        <Routes>
-          {/* Página de Login */}
-          <Route path="/" element={<Login />} />
+    <Router>
+      <Routes>
 
-          {/* Página de Registro */}
-          <Route path="/register" element={<Register />} />
+        {/* Página de autenticación */}
+        <Route path="/" element={<AuthPage />} />
 
-          {/* Dashboards protegidos según el rol */}
-          <Route
-            path="/administrador"
-            element={
-              <PrivateRoute role="administrador">
-                <DashboardAdmin />
-              </PrivateRoute>
-            }
-          />
+        {/* Dashboards por rol */}
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/supervisor" element={<SupervisorDashboard />} />
+        <Route path="/revisor" element={<RevisorDashboard />} />
+        <Route path="/revisor/dashboard" element={<DashboardRevisor />} />
 
-          <Route
-            path="/supervisor"
-            element={
-              <PrivateRoute role="supervisor">
-                <DashboardSupervisor />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/revisor"
-            element={
-              <PrivateRoute role="revisor">
-                <DashboardRevisor />
-              </PrivateRoute>
-            }
-          />
-
-          {/* Redirección por defecto */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+        {/* Nuevas rutas del supervisor */}
+        <Route path="/supervisor/procesos" element={<ProcesosSupervisor />} />
+        <Route path="/supervisor/proceso/:id" element={<DetalleProceso />} />
+        <Route path="/supervisor/reportar" element={<ReporteIncidencia />} />
+        <Route path="/supervisor/reportes" element={<ReportesSupervisor />} />
+        <Route path="/supervisor/reportes/nuevo" element={<ReporteIncidencia />} />
+      </Routes>
+    </Router>
   );
-};
+}
 
 export default App;
