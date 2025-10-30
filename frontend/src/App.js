@@ -1,35 +1,36 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import AuthPage from "./components/AuthPage";
 import AdminDashboard from "./components/DashboardAdmin";
 import SupervisorDashboard from "./components/DashboardSupervisor";
 import RevisorDashboard from "./components/DashboardRevisor";
-import DashboardRevisor from "./pages/Revisor/DashboardRevisor";
+
+import SupervisorLayout from "./components/Supervisor/SupervisorLayout";
 import ProcesosSupervisor from "./components/Supervisor/ProcesosSupervisor";
+import ReporteIncidencia from "./components/Supervisor/ReporteIncidencia";
+import ReportesSupervisor from "./pages/Supervisor/ReportesSupervisor"; 
 import DetalleProceso from "./components/Supervisor/DetalleProceso";
-import ReporteIncidencia from "./components/Supervisor/ReporteIncidencia"; 
-import ReportesSupervisor from "./pages/Supervisor/ReportesSupervisor";
 
 function App() {
   return (
     <Router>
       <Routes>
-
         {/* Página de autenticación */}
         <Route path="/" element={<AuthPage />} />
 
-        {/* Dashboards por rol */}
+        {/* Dashboards generales */}
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/supervisor" element={<SupervisorDashboard />} />
         <Route path="/revisor" element={<RevisorDashboard />} />
-        <Route path="/revisor/dashboard" element={<DashboardRevisor />} />
+        <Route path="/supervisor/dashboard" element={<SupervisorDashboard />} />
 
-        {/* Nuevas rutas del supervisor */}
-        <Route path="/supervisor/procesos" element={<ProcesosSupervisor />} />
-        <Route path="/supervisor/proceso/:id" element={<DetalleProceso />} />
-        <Route path="/supervisor/reportar" element={<ReporteIncidencia />} />
-        <Route path="/supervisor/reportes" element={<ReportesSupervisor />} />
-        <Route path="/supervisor/reportes/nuevo" element={<ReporteIncidencia />} />
+        {/* === Sección del Supervisor con layout persistente === */}
+        <Route path="/supervisor" element={<SupervisorLayout />}>
+          <Route path="procesos" element={<ProcesosSupervisor />} />
+          <Route path="proceso/:id" element={<DetalleProceso />} />
+          <Route path="reportes" element={<ReportesSupervisor />} />
+          <Route path="reportar" element={<ReporteIncidencia />} />
+        </Route>
       </Routes>
     </Router>
   );
