@@ -104,7 +104,6 @@ router.post(
     }
   }
 );
-
  
 
 // LISTAR TODOS LOS USUARIOS (solo ADMIN)

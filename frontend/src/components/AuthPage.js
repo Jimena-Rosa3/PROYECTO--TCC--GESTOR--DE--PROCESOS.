@@ -27,10 +27,17 @@ const AuthPage = () => {
           password: formData.password,
         });
 
+        // ✅ Guardar el token en localStorage
+        if (res.data.token) {
+          localStorage.setItem("token", res.data.token);
+        }
+
+        // ✅ Redirección según el rol
         const { rol } = res.data.usuario;
         if (rol === "administrador") navigate("/admin");
         if (rol === "supervisor") navigate("/supervisor");
         if (rol === "revisor") navigate("/revisor");
+
       } else {
         await axios.post("/register", formData);
         alert("Cuenta creada exitosamente");
@@ -45,6 +52,7 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-xl rounded-2xl flex max-w-5xl w-full overflow-hidden">
+
         {/* IZQUIERDA */}
         <div className="w-full md:w-1/2 p-10">
           {/* LOGO */}
