@@ -13,46 +13,71 @@ const AuthPage = () => {
 
   const navigate = useNavigate();
 
+  // Manejo de cambios en inputs
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // Envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       if (isLogin) {
+        // 🔹 LOGIN
         const res = await axios.post("/login", {
           correo: formData.correo,
-          password: formData.password,
+          contraseña: formData.password, // 👈 importante: debe coincidir con tu backend
         });
 
-        // ✅ Guardar el token en localStorage
-        if (res.data.token) {
+        if (res.data?.token) {
+          // Guardamos token y usuario
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("usuario", JSON.stringify(res.data.usuario));
+
+          // 🔀 Redirección según el rol
+          const rol = res.data.usuario.rol;
+          switch (rol) {
+            case "administrador":
+              navigate("/admin");
+              break;
+            case "supervisor":
+              navigate("/supervisor");
+              break;
+            case "revisor":
+              navigate("/revisor");
+              break;
+            default:
+              navigate("/");
+              break;
+          }
+        } else {
+          alert("Credenciales incorrectas o respuesta inválida.");
         }
 
-        // ✅ Redirección según el rol
-        const { rol } = res.data.usuario;
-        if (rol === "administrador") navigate("/admin");
-        if (rol === "supervisor") navigate("/supervisor");
-        if (rol === "revisor") navigate("/revisor");
-
       } else {
-        await axios.post("/register", formData);
-        alert("Cuenta creada exitosamente");
+        // 🔹 REGISTRO
+        await axios.post("/register", {
+          nombre: formData.nombre,
+          correo: formData.correo,
+          contraseña: formData.password,
+          rol: formData.rol,
+        });
+        alert("✅ Cuenta creada exitosamente. Ahora puedes iniciar sesión.");
         setIsLogin(true);
       }
     } catch (error) {
-      console.error(error);
-      alert("Error al procesar la solicitud");
+      console.error("Error en autenticación:", error.response || error);
+      const msg =
+        error.response?.data?.message ||
+        "❌ Error al procesar la solicitud. Inténtalo de nuevo.";
+      alert(msg);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white shadow-xl rounded-2xl flex max-w-5xl w-full overflow-hidden">
-
         {/* IZQUIERDA */}
         <div className="w-full md:w-1/2 p-10">
           {/* LOGO */}
@@ -61,7 +86,7 @@ const AuthPage = () => {
             <h1 className="text-2xl font-bold text-gray-800">ProcessControl</h1>
           </div>
 
-          {/* BOTONES DE LOGIN/REGISTRO */}
+          {/* BOTONES LOGIN/REGISTRO */}
           <div className="flex mb-8 bg-gray-100 rounded-lg p-1">
             <button
               onClick={() => setIsLogin(true)}
@@ -134,7 +159,7 @@ const AuthPage = () => {
                 name="correo"
                 value={formData.correo}
                 onChange={handleChange}
-                placeholder="Ingresa tu correo o email"
+                placeholder="Ingresa tu correo"
                 className="w-full mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none"
                 required
               />
@@ -173,7 +198,6 @@ const AuthPage = () => {
               </div>
             )}
 
-            {/* LINK OLVIDAR CONTRASEÑA */}
             {isLogin && (
               <div className="text-right">
                 <a
@@ -185,7 +209,6 @@ const AuthPage = () => {
               </div>
             )}
 
-            {/* BOTÓN */}
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow transition"
@@ -225,8 +248,8 @@ const AuthPage = () => {
               Optimiza tu Flujo de Trabajo
             </h2>
             <p className="text-gray-600">
-              Monitorea, verifica y aprueba procesos con una eficiencia sin igual
-              y control en tiempo real.
+              Monitorea, verifica y aprueba procesos con eficiencia y control en
+              tiempo real.
             </p>
           </div>
         </div>

@@ -13,6 +13,10 @@ import ProcesosSupervisor from "./components/Supervisor/ProcesosSupervisor";
 import ReportesSupervisor from "./components/Supervisor/ReportesSupervisor";
 import DetalleProceso from "./components/Supervisor/DetalleProceso";
 
+// === Componentes del Revisor ===
+import RevisorLayout from "./components/Revisor/RevisorLayout";
+import CrearReporte from "./components/Revisor/CrearReporte"; // Asegúrate que exista este archivo
+
 function App() {
   return (
     <Router>
@@ -22,17 +26,19 @@ function App() {
 
         {/* Dashboards generales */}
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/revisor" element={<RevisorDashboard />} />
+
+        {/* === Rutas del Revisor con layout propio === */}
+        <Route path="/revisor" element={<RevisorLayout />}>
+          <Route index element={<RevisorDashboard />} />
+          <Route path="crear-reporte" element={<CrearReporte />} />
+        </Route>
 
         {/* === Rutas del Supervisor con layout propio === */}
         <Route path="/supervisor" element={<SupervisorLayout />}>
-          {/* Página principal del supervisor */}
           <Route index element={<SupervisorDashboard />} />
-          
-          {/* Subrutas */}
           <Route path="procesos" element={<ProcesosSupervisor />} />
           <Route path="reportes" element={<ReportesSupervisor />} />
-          <Route path="/supervisor/proceso/:id" element={<DetalleProceso />} />
+          <Route path="proceso/:id" element={<DetalleProceso />} />
         </Route>
       </Routes>
     </Router>
