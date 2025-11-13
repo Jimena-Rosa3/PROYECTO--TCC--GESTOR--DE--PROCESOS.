@@ -1,8 +1,47 @@
-import React from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bell, CheckCircle, Clock } from "lucide-react";
+import socket from "../utils/socket";
+import { AuthContext } from "../context/AuthContext";
 
-const NotificationPanel = ({ visible, notificaciones, onClose, onMarkRead }) => {
+const NotificationPanel = ({ visible, onClose }) => {
+  const { user } = useContext(AuthContext);
+  const [notificaciones, setNotificaciones] = useState([]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    // Escucha notificaciones según el rol
+    const recibirNotificacion = (notif) => {
+      setNotificaciones((prev) => [notif, ...prev]);
+    };
+
+    if (user.rol === "supervisor") {
+      socket.on("notificacion_supervisor", recibirNotificacion);
+    } else if (user.rol === "revisor") {
+      socket.on("notificacion_revisor", recibirNotificacion);
+    } else if (user.rol === "administrador") {
+      socket.on("notificacion_admin", recibirNotificacion);
+    }
+
+    // También escuchan las generales
+    socket.on("notificacion_general", recibirNotificacion);
+
+    // Cleanup al desmontar
+    return () => {
+      socket.off("notificacion_supervisor", recibirNotificacion);
+      socket.off("notificacion_revisor", recibirNotificacion);
+      socket.off("notificacion_admin", recibirNotificacion);
+      socket.off("notificacion_general", recibirNotificacion);
+    };
+  }, [user]);
+
+  const marcarComoLeida = (id) => {
+    setNotificaciones((prev) =>
+      prev.map((n) => (n._id === id ? { ...n, vista: true } : n))
+    );
+  };
+
   return (
     <AnimatePresence>
       {visible && (
@@ -64,7 +103,7 @@ const NotificationPanel = ({ visible, notificaciones, onClose, onMarkRead }) => 
                           className="text-blue-500 cursor-pointer"
                           size={18}
                           title="Marcar como vista"
-                          onClick={() => onMarkRead(notif._id)}
+                          onClick={() => marcarComoLeida(notif._id)}
                         />
                       )}
                     </div>

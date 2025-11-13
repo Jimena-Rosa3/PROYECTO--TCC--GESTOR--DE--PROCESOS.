@@ -7,9 +7,12 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     const rol = localStorage.getItem("rol");
     const nombre = localStorage.getItem("nombre");
+    const correo = localStorage.getItem("correo");
 
-    // Si hay token y rol, retorna el usuario
-    return token && rol ? { token, rol, nombre } : null;
+    // Si hay token, devuelve todos los datos del usuario
+    return token && rol && nombre && correo
+      ? { token, rol, nombre, correo }
+      : null;
   });
 
   const login = (userData) => {
@@ -17,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", userData.token);
     localStorage.setItem("rol", userData.rol);
     localStorage.setItem("nombre", userData.nombre);
+    localStorage.setItem("correo", userData.correo);
   };
 
   const logout = () => {
@@ -24,6 +28,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("rol");
     localStorage.removeItem("nombre");
+    localStorage.removeItem("correo");
   };
 
   return (
